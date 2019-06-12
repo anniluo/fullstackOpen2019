@@ -10,15 +10,15 @@ const Header = (props) => {
 }
 
 const Part = (props) => {
-    return <p>{props.partName} {props.partAmount}</p>
+    return <p>{props.partName} {props.partExercises}</p>
 }
 
 const Content = (props) => {
     return (
         <div>
-            <Part partName={props.parts[0].name} partAmount={props.parts[0].exercises}/>
-            <Part partName={props.parts[1].name} partAmount={props.parts[1].exercises}/>
-            <Part partName={props.parts[2].name} partAmount={props.parts[2].exercises}/>
+            <Part partName={props.parts[0].name} partExercises={props.parts[0].exercises}/>
+            <Part partName={props.parts[1].name} partExercises={props.parts[1].exercises}/>
+            <Part partName={props.parts[2].name} partExercises={props.parts[2].exercises}/>
         </div>
     )
 }
@@ -26,31 +26,32 @@ const Content = (props) => {
 const Total = (props) => {
     return (
         <div>
-            <p>Number of exercises {props.partOnetasks + props.partTwoTasks + props.partThreeTasks}</p>
+            <p>Number of exercises {props.parts[0].exercises + props.parts[1].exercises + props.parts[2].exercises}</p>
         </div>
     )
 }
 
 const App = () => {
     const course = 'Half Stack application development'
-    const part1 = {
-        name: 'Fundamentals of React',
-        exercises: 10
-    }
-    const part2 = {
-        name: 'Using props to pass data',
-        exercises: 7
-    }
-    const part3 = {
-        name: 'State of a component',
-        exercises: 14
-    }
-
+    const parts = [
+        {
+            name: 'Fundamentals of React',
+            exercises: 10
+        },
+        {
+            name: 'Using props to pass data',
+            exercises: 7
+        },
+        {
+            name: 'State of a component',
+            exercises: 14
+        }
+    ]
     return (
         <div>
             <Header courseName={course}/>
-            <Content parts={[part1, part2, part3]}/>
-            <Total partOnetasks={part1.exercises} partTwoTasks={part2.exercises} partThreeTasks={part3.exercises}/>
+            <Content parts={parts}/>
+            <Total parts={parts}/>
         </div>
     )
 }
