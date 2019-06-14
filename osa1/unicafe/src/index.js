@@ -1,16 +1,18 @@
 import React, {useState} from 'react';
 import ReactDOM from 'react-dom';
 
-// 1.8: unicafe step3, component for Statistics
 const Statistics = ({reviews}) => {
 
     const allReviews = reviews.good + reviews.neutral + reviews.bad
     const positiveReviews = (reviews.good / allReviews) * 100
     const averageReviews = ( ( reviews.good * 1 ) + ( reviews.neutral * 0 ) + ( reviews.bad * (-1) ) ) / allReviews 
 
+    if (allReviews === 0) {
+        return <p>No feedback given.</p>
+    }
+    
     return (
         <div>
-            <h2>Statistics</h2>
             <p>Good reviews: {reviews.good}</p>
             <p>Neutral reviews: {reviews.neutral}</p>
             <p>Bad reviews: {reviews.bad}</p>
@@ -53,6 +55,7 @@ const App = () => {
                 <Button handleClick={handleBadReviewClick} text='Bad'/>
             </div>
             <div>
+                <h2>Statistics</h2>
                 <Statistics reviews={{'good': good, 'neutral': neutral, 'bad': bad}}/>
             </div>
         </div>
