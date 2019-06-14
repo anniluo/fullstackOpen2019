@@ -4,13 +4,21 @@ import ReactDOM from 'react-dom';
 // Tee Unicafelle verkossa toimiva palautesovellus. 
 // Vastausvaihtoehtoja olkoon vain kolme: hyvä, neutraali ja huono.
  
-const Statistics = (props) => {
+const Statistics = ({reviews}) => {
+
+    const allReviews = reviews.good + reviews.neutral + reviews.bad
+    const positiveReviews = (reviews.good / allReviews) * 100
+    const averageReviews = ( ( reviews.good * 1 ) + ( reviews.neutral * 0 ) + ( reviews.bad * (-1) ) ) / allReviews 
+
     return (
         <div>
             <h2>Statistics</h2>
-            <p>Good reviews: {props.reviews[0]}</p>
-            <p>Neutral reviews: {props.reviews[1]}</p>
-            <p>Bad reviews: {props.reviews[2]}</p>
+            <p>Good reviews: {reviews.good}</p>
+            <p>Neutral reviews: {reviews.neutral}</p>
+            <p>Bad reviews: {reviews.bad}</p>
+            <p>All reviews: {allReviews}</p>
+            <p>Average of reviews: {averageReviews}</p>
+            <p>Positive reviews: {positiveReviews}%</p>
         </div>
     )
 }
@@ -47,7 +55,7 @@ const App = () => {
                 <Button handleClick={handleBadReviewClick} text='Bad'/>
             </div>
             <div>
-                <Statistics reviews={[good, neutral, bad]}/>
+                <Statistics reviews={{'good': good, 'neutral': neutral, 'bad': bad}}/>
             </div>
         </div>
     )
