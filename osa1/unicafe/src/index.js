@@ -1,6 +1,16 @@
 import React, {useState} from 'react';
 import ReactDOM from 'react-dom';
 
+const Button = (props) => {
+    return (
+        <button onClick={props.handleClick}>{props.text}</button>
+    )
+}
+
+const Statistic = ({text, review}) => {
+    return <p>{text}: {review}</p>
+}
+
 const Statistics = ({reviews}) => {
 
     const allReviews = reviews.good + reviews.neutral + reviews.bad
@@ -13,19 +23,13 @@ const Statistics = ({reviews}) => {
     
     return (
         <div>
-            <p>Good reviews: {reviews.good}</p>
-            <p>Neutral reviews: {reviews.neutral}</p>
-            <p>Bad reviews: {reviews.bad}</p>
-            <p>All reviews: {allReviews}</p>
-            <p>Average of reviews: {averageReviews}</p>
-            <p>Positive reviews: {positiveReviews}%</p>
+            <Statistic text='Good reviews' review={reviews.good}/>
+            <Statistic text='Neutral reviews' review={reviews.neutral}/>
+            <Statistic text='Bad reviews' review={reviews.bad}/>
+            <Statistic text='All reviews' review={allReviews}/>
+            <Statistic text='Average of reviews' review={averageReviews}/>
+            <Statistic text='Positive reviews (%)' review={positiveReviews}/>
         </div>
-    )
-}
-
-const Button = (props) => {
-    return (
-        <button onClick={props.handleClick}>{props.text}</button>
     )
 }
 
