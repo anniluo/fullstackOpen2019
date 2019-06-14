@@ -1,9 +1,7 @@
 import React, {useState} from 'react';
 import ReactDOM from 'react-dom';
 
-// Tee Unicafelle verkossa toimiva palautesovellus. 
-// Vastausvaihtoehtoja olkoon vain kolme: hyvä, neutraali ja huono.
- 
+// 1.8: unicafe step3, component for Statistics
 const Statistics = ({reviews}) => {
 
     const allReviews = reviews.good + reviews.neutral + reviews.bad
