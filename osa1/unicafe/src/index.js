@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import ReactDOM from 'react-dom';
+import './index.css';
 
 const Button = (props) => {
     return (
@@ -8,7 +9,14 @@ const Button = (props) => {
 }
 
 const Statistic = ({text, review}) => {
-    return <p>{text}: {review}</p>
+    return (
+        <tbody>
+            <tr>
+                <td>{text}</td>
+                <td>{review}</td>
+            </tr>
+        </tbody>
+    )
 }
 
 const Statistics = ({reviews}) => {
@@ -22,14 +30,14 @@ const Statistics = ({reviews}) => {
     }
     
     return (
-        <div>
+        <table>
             <Statistic text='Good reviews' review={reviews.good}/>
             <Statistic text='Neutral reviews' review={reviews.neutral}/>
             <Statistic text='Bad reviews' review={reviews.bad}/>
             <Statistic text='All reviews' review={allReviews}/>
             <Statistic text='Average of reviews' review={averageReviews}/>
             <Statistic text='Positive reviews (%)' review={positiveReviews}/>
-        </div>
+        </table>
     )
 }
 
