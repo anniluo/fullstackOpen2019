@@ -1,23 +1,40 @@
 import React, {useState} from 'react';
 import ReactDOM from 'react-dom';
 
-// Laajenna sovellusta siten, että siihen tulee nappi, jota painamalla
-// sovellus näyttää satunnaisen ohjelmistotuotantoon liittyvän anekdootin
+const Button = ({handleClick, text}) => {
+    return <button onClick={handleClick}>{text}</button>
+}
+
+const VoteDisplay = ({votes}) => {
+    return <p>{votes} votes.</p>
+}
+
+// Laajenna sovellusta siten, että näytettävää anekdoottia on mahdollista äänestää
 const App = (props) => {
     const [selected, setSelected] = useState(0)
+    // initialize an array filled with value 0
+    const [votes, setVotes] = useState(new Array(anecdotes.length).fill(0))
 
-    const handleClick = () => {
+    const handleChangeClick = () => {
         // randomize a number between 0 and the length of the anecdotes array
         let randomNumber = Math.floor(Math.random() * anecdotes.length)
         setSelected(randomNumber)
-        console.log('button clicked', randomNumber)
+    }
+
+    const handleVoteClick = () => {
+        // copy the state (state should not be mutated)
+        const votesCopy = [...votes]
+        votesCopy[selected] += 1
+        setVotes(votesCopy)
     }
 
     return (
         <div>
             {props.anecdotes[selected]}
             <br/>
-            <button onClick={handleClick}>Change the anecdote</button>
+            <VoteDisplay votes={votes[selected]}/>
+            <Button handleClick={handleVoteClick} text='Vote this anecdote'/>
+            <Button handleClick={handleChangeClick} text='Change the anecdote'/>
         </div>
     )
 }
