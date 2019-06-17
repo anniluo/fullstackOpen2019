@@ -9,9 +9,30 @@ const VoteDisplay = ({votes}) => {
     return <p>{votes} votes.</p>
 }
 
-// Laajenna sovellusta siten, että näytettävää anekdoottia on mahdollista äänestää
+const TodaysAnecdote = ({anecdote}) => {
+    return (
+        <div>
+            <h2>Today's Anecdote</h2>
+            <p>{anecdote}</p>
+        </div>
+    )
+}
+
+const MostVotedAnecdote = ({anecdote, votes}) => {
+    // check if all the values in the 'votes' -array are 0
+    if (votes.every(vote => { return vote === 0 })) return <p>No voted anecdotes</p>
+
+    return (
+        <div>
+            <h2>Anecdote with the most votes</h2>
+            <p>{anecdote}</p>
+        </div>
+    )
+}
+
 const App = (props) => {
     const [selected, setSelected] = useState(0)
+    const [mostVoted, setMostVoted] = useState(0)
     // initialize an array filled with value 0
     const [votes, setVotes] = useState(new Array(anecdotes.length).fill(0))
 
@@ -26,15 +47,19 @@ const App = (props) => {
         const votesCopy = [...votes]
         votesCopy[selected] += 1
         setVotes(votesCopy)
+
+        if (mostVoted < votesCopy[selected]) {
+            setMostVoted(selected)
+        }
     }
 
     return (
         <div>
-            {props.anecdotes[selected]}
-            <br/>
+            <TodaysAnecdote anecdote={anecdotes[selected]}/>
             <VoteDisplay votes={votes[selected]}/>
             <Button handleClick={handleVoteClick} text='Vote this anecdote'/>
             <Button handleClick={handleChangeClick} text='Change the anecdote'/>
+            <MostVotedAnecdote anecdote={anecdotes[mostVoted]} votes={votes}/>
         </div>
     )
 }
@@ -48,5 +73,5 @@ const anecdotes = [
     'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.'
 ]
 
-ReactDOM.render(<App anecdotes={anecdotes}/>, document.getElementById('root'));
+ReactDOM.render(<App/>, document.getElementById('root'));
 
