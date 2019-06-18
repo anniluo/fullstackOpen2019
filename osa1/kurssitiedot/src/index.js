@@ -97,7 +97,7 @@ const App = () => {
                     id: 2
                 }
             ]
-        }
+        },
     ]
     
     return (
