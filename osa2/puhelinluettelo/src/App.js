@@ -1,25 +1,16 @@
 import React, { useState } from 'react';
+import ContactForm from './components/ContactForm';
+import ContactsList from './components/ContactsList';
+import Filter from './components/Filter';
 
 const App = () => {
     const [persons, setPersons] = useState([
-        {name: 'Mike Eagle', number: '555 0505051'}
+        {name: 'Mike Eagle', number: '555 0505051'},
     ])
     const [newName, setNewName] = useState('')
     const [newNumber, setNewNumber] = useState('')
-
-    const addContact = (event) => {
-        event.preventDefault()
-        
-        if (persons.find(person => person.name === newName)) {
-            window.alert(`${newName} is already in the Phonebook!`)   
-        } else {
-            const nameObject = {
-                name: newName,
-                number: newNumber
-            }
-            setPersons(persons.concat(nameObject))
-        }
-    }
+    const [filter, setFilter] = useState('')
+    const [filterResult, setNewFilterResult] = useState([])
 
     const handleNameChange = (event) => {
         setNewName(event.target.value)
@@ -29,30 +20,42 @@ const App = () => {
         setNewNumber(event.target.value)
     }
 
-    const rows = () => persons.map(person => <li key={person.name}>{person.name} {person.number}</li>)
+    const handleFilterChange = (event) => {
+        let filterInput = event.target.value
+        setFilter(filterInput)
+        let re = new RegExp(`${filterInput}`, 'gi')
 
-    return (
-        <div>
-            <h2>Phonebook</h2>
-            <form onSubmit={addContact}>
-                <div>
-                    name: <input value={newName} onChange={handleNameChange}/>
-                </div>
-                <div>
-                number: <input value={newNumber} onChange={handleNumberChange}/>
-                </div>
-                <div>
-                    <button type='submit'>add contact</button>
-                </div>
-            </form>
-            <h2>Contacts</h2>
-            <div>
-                <ul>
-                    {rows()}
-                </ul>
-            </div>
-        </div>
-    )
+        setNewFilterResult(persons.filter(person => {
+            return person.name.match(re)
+        }))
+    }
+
+    const addContact = (event) => {
+        event.preventDefault()
+        
+        persons.find(person => person.name === newName 
+        ? window.alert(`${newName} is already in the Phonebook!`)
+        : setPersons(persons.concat({name: newName, number: newNumber})))
+    }
+
+  return (
+    <div>
+        <h2>Phonebook</h2>
+        <Filter 
+            filter={filter} 
+            handleFilterChange={handleFilterChange}
+            filterResult={filterResult}
+        />
+        <ContactForm 
+            addContact={addContact}
+            newName={newName}
+            handleNameChange={handleNameChange} 
+            newNumber={newNumber} 
+            handleNumberChange={handleNumberChange}
+        />
+        <ContactsList persons={persons}/>
+    </div>
+  )
 }
 
 export default App;
