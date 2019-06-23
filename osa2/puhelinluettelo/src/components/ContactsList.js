@@ -1,7 +1,11 @@
 import React from 'react';
 
-const ContactsList = ({persons}) => {
-    const rows = () => persons.map(person => <li key={person.name}>{person.name} {person.number}</li>)
+const ContactsList = ({contacts}) => {
+    const rows = () => contacts.map(contact => {
+        return (
+            <li key={contact.id}>{contact.name} {contact.number}</li>
+        )
+    })
 
     return (
         <div>

@@ -8,7 +8,7 @@ const ContactForm = ({addContact, newName, handleNameChange, newNumber, handleNu
                     name: <input value={newName} onChange={handleNameChange}/>
                 </div>
                 <div>
-                number: <input value={newNumber} onChange={handleNumberChange}/>
+                    number: <input value={newNumber} onChange={handleNumberChange}/>
                 </div>
                 <div>
                     <button type='submit'>add contact</button>

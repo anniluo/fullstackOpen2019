@@ -1,16 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ContactForm from './components/ContactForm';
 import ContactsList from './components/ContactsList';
 import Filter from './components/Filter';
+import axios from 'axios';
 
 const App = () => {
-    const [persons, setPersons] = useState([
-        {name: 'Mike Eagle', number: '555 0505051'},
-    ])
+    const [contacts, setContacts] = useState([])
     const [newName, setNewName] = useState('')
     const [newNumber, setNewNumber] = useState('')
     const [filter, setFilter] = useState('')
     const [filterResult, setNewFilterResult] = useState([])
+
+    useEffect(() => {
+        axios
+            .get('http://localhost:3001/contacts')
+            .then(response => {
+            setContacts(response.data)
+        })
+    }, [])
 
     const handleNameChange = (event) => {
         setNewName(event.target.value)
@@ -25,17 +32,18 @@ const App = () => {
         setFilter(filterInput)
         let re = new RegExp(`${filterInput}`, 'gi')
 
-        setNewFilterResult(persons.filter(person => {
-            return person.name.match(re)
+        setNewFilterResult(contacts.filter(contact => {
+            return contact.name.match(re)
         }))
     }
 
     const addContact = (event) => {
         event.preventDefault()
         
-        persons.find(person => person.name === newName 
+        contacts.find(contact => contact.name === newName 
         ? window.alert(`${newName} is already in the Phonebook!`)
-        : setPersons(persons.concat({name: newName, number: newNumber})))
+        : setContacts(contacts.concat({
+            name: newName, number: newNumber, id: contacts.length + 1})))
     }
 
   return (
@@ -53,7 +61,7 @@ const App = () => {
             newNumber={newNumber} 
             handleNumberChange={handleNumberChange}
         />
-        <ContactsList persons={persons}/>
+        <ContactsList contacts={contacts}/>
     </div>
   )
 }
