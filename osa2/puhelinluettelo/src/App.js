@@ -12,7 +12,9 @@ const App = () => {
     const [filterResult, setNewFilterResult] = useState([])
 
     useEffect(() => {
-        contactService.getAll().then(contacts => setContacts(contacts))
+        contactService
+            .getAll()
+            .then(contacts => setContacts(contacts))
     }, [])
 
     const handleNameChange = (event) => {
@@ -31,6 +33,19 @@ const App = () => {
         setNewFilterResult(contacts.filter(contact => {
             return contact.name.match(re)
         }))
+    }
+
+    const handleDeleteClick = id => {
+        const contact = contacts.find(contact => contact.id === id)
+
+        if (window.confirm(`Delete contact information for ${contact.name}?`)) {
+            contactService
+                .drop(id)
+                .then(response => {
+                    setContacts(contacts.filter(contact => contact.id !== id))
+                    window.alert(`Contact information for ${contact.name} deleted.`)
+            })
+        } 
     }
 
     const addContact = (event) => {
@@ -54,7 +69,7 @@ const App = () => {
     }
 
   return (
-    <div>
+    <>
         <h2>Phonebook</h2>
         <Filter 
             filter={filter} 
@@ -68,8 +83,10 @@ const App = () => {
             newNumber={newNumber} 
             handleNumberChange={handleNumberChange}
         />
-        <ContactsList contacts={contacts}/>
-    </div>
+        <ContactsList 
+            contacts={contacts}
+            handleDeleteClick={handleDeleteClick}/>
+    </>
   )
 }
 

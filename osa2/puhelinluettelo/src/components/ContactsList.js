@@ -1,21 +1,24 @@
 import React from 'react';
 
-const ContactsList = ({contacts}) => {
+const ContactsList = ({contacts, handleDeleteClick}) => {
     const rows = () => contacts.map(contact => {
         return (
-            <li key={contact.id}>{contact.name} {contact.number}</li>
+            <div key={contact.id} className='list-item-container'>
+                <li>{contact.name} {contact.number}</li>
+                <button onClick={() => handleDeleteClick(contact.id)}>delete</button>
+            </div>
         )
     })
 
     return (
-        <div>
+        <>
             <h2>Contacts</h2>
             <div>
                 <ul>
                     {rows()}
                 </ul>
             </div>
-        </div>
+        </>
     )
     
 }
