@@ -17,8 +17,14 @@ const drop = (id) => {
     return request.then(response => response.data)
 }
 
+const update = (id, changedContact) => {
+    const request = axios.put(`${baseUrl}/${id}`, changedContact)
+    return request.then(response => response.data)
+}
+
 export default {
     getAll,
     create,
-    drop
+    drop,
+    update
 }

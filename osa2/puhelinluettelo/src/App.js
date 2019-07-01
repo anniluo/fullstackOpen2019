@@ -50,9 +50,19 @@ const App = () => {
 
     const addContact = (event) => {
         event.preventDefault()
-        
-        if (contacts.find(contact => contact.name === newName)) {
-            window.alert(`${newName} is already in the Phonebook!`)
+        const contact = contacts.find(contact => contact.name === newName)
+
+        if (contact) {
+            if (window.confirm(`Update contact information for ${contact.name}?`)) {
+                const id = contact.id
+                const changedContact = {...contact, number: newNumber}
+                
+                contactService
+                    .update(id, changedContact)
+                    .then(updatedContact => {
+                        setContacts(contacts.map(contact => contact.id !== id ? contact : updatedContact))
+                    })
+            }
         } else {
             const contactObject = {
                 name: newName,
