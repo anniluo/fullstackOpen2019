@@ -11,7 +11,8 @@ const App = () => {
     const [newNumber, setNewNumber] = useState('')
     const [filter, setFilter] = useState('')
     const [filterResult, setNewFilterResult] = useState([])
-    const [message, setMessage] = useState(null)
+    const [successMessage, setSuccessMessage] = useState(null)
+    const [errorMessage, setErrorMessage] = useState(null)
 
     useEffect(() => {
         contactService
@@ -45,10 +46,16 @@ const App = () => {
                 .drop(id)
                 .then(response => {
                     setContacts(contacts.filter(contact => contact.id !== id))
-                    setMessage(`Contact information for ${contact.name} deleted.`)
+                    setSuccessMessage(`Contact information for ${contact.name} deleted successfully.`)
                     setTimeout(() => {
-                        setMessage(null)
+                        setSuccessMessage(null)
                     }, 5000)
+            })
+            .catch(error => {
+                setErrorMessage(`Request failed with an error message: ${error.message}`)
+                setTimeout(() => {
+                    setErrorMessage(null)
+                }, 5000)
             })
         } 
     }
@@ -66,10 +73,17 @@ const App = () => {
                     .update(id, changedContact)
                     .then(updatedContact => {
                         setContacts(contacts.map(contact => contact.id !== id ? contact : updatedContact))
-                        setMessage(`Contact information updated for ${updatedContact.name}.`)
+                        setSuccessMessage(`Contact information updated for ${updatedContact.name} successfully.`)
                         setTimeout(() => {
-                            setMessage(null)
+                            setSuccessMessage(null)
                         }, 5000)
+                    })
+                    .catch(error => {
+                        setErrorMessage(`Update failed, contact information for ${contact.name} was already deleted from the server.`)
+                        setTimeout(() => {
+                            setErrorMessage(null)
+                        }, 5000)
+                        setContacts(contacts.filter(contact => contact.id !== id))
                     })
             }
         } else {
@@ -83,9 +97,9 @@ const App = () => {
                 setContacts(contacts.concat(returnedContact))
                 setNewName('')
                 setNewNumber('')
-                setMessage(`New Contact added: ${returnedContact.name}.`)
+                setSuccessMessage(`New Contact added: ${returnedContact.name}.`)
                 setTimeout(() => {
-                    setMessage(null)
+                    setSuccessMessage(null)
                 }, 5000)
             })
         }
@@ -94,7 +108,10 @@ const App = () => {
   return (
     <>
         <h2>Phonebook</h2>
-        <Notification message={message}/>
+        <Notification 
+            errorMessage={errorMessage} 
+            successMessage={successMessage}
+        />
         <Filter 
             filter={filter} 
             handleFilterChange={handleFilterChange}
