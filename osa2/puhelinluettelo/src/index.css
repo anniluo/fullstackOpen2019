@@ -16,3 +16,26 @@ code {
   display: flex;
   padding: 5px;
 }
+
+.error-message {
+  margin: 10px;
+  padding: 10px;
+  background-color: red;
+  color: whitesmoke;
+  font-weight: 600;
+  text-align: center;
+  max-width: 400px;
+  border-block-style: double; 
+  border-block-color: whitesmoke;
+}
+
+.success-message {
+  margin: 10px;
+  padding: 10px;
+  background-color: green;
+  color: whitesmoke;
+  text-align: center;
+  max-width: 400px;
+  border-block-style: double; 
+  border-block-color: whitesmoke;
+}

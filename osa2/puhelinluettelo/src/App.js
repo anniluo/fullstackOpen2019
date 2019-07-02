@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ContactForm from './components/ContactForm';
 import ContactsList from './components/ContactsList';
 import Filter from './components/Filter';
+import Notification from './components/Notification';
 import contactService from './services/contacts'
 
 const App = () => {
@@ -10,6 +11,7 @@ const App = () => {
     const [newNumber, setNewNumber] = useState('')
     const [filter, setFilter] = useState('')
     const [filterResult, setNewFilterResult] = useState([])
+    const [message, setMessage] = useState(null)
 
     useEffect(() => {
         contactService
@@ -43,7 +45,10 @@ const App = () => {
                 .drop(id)
                 .then(response => {
                     setContacts(contacts.filter(contact => contact.id !== id))
-                    window.alert(`Contact information for ${contact.name} deleted.`)
+                    setMessage(`Contact information for ${contact.name} deleted.`)
+                    setTimeout(() => {
+                        setMessage(null)
+                    }, 5000)
             })
         } 
     }
@@ -61,6 +66,10 @@ const App = () => {
                     .update(id, changedContact)
                     .then(updatedContact => {
                         setContacts(contacts.map(contact => contact.id !== id ? contact : updatedContact))
+                        setMessage(`Contact information updated for ${updatedContact.name}.`)
+                        setTimeout(() => {
+                            setMessage(null)
+                        }, 5000)
                     })
             }
         } else {
@@ -74,6 +83,10 @@ const App = () => {
                 setContacts(contacts.concat(returnedContact))
                 setNewName('')
                 setNewNumber('')
+                setMessage(`New Contact added: ${returnedContact.name}.`)
+                setTimeout(() => {
+                    setMessage(null)
+                }, 5000)
             })
         }
     }
@@ -81,6 +94,7 @@ const App = () => {
   return (
     <>
         <h2>Phonebook</h2>
+        <Notification message={message}/>
         <Filter 
             filter={filter} 
             handleFilterChange={handleFilterChange}
