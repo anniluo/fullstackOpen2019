@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 const CountryInfo = ({country}) => {
 
@@ -11,19 +11,23 @@ const CountryInfo = ({country}) => {
     }
 
     return (
-        <div>
-            <h2>{country.name}</h2>
-            <p>Capital: {country.capital}</p>
-            <p>Population: {country.population}</p>
+        <>
+            <div>
+                <h2>{country.name}</h2>
+                <img className='flag' src={country.flag} alt={`flag of ${country.name}`}/>
+                <p>Capital: {country.capital}</p>
+                <p>Population: {country.population}</p>
+            </div>
             <div> 
                 Languages:
                 <ul>
                     {languageList()}
                 </ul>
             </div>
-            <br/>
-            <img className='flag' src={country.flag} alt={`flag of ${country.name}`}/>
-        </div>
+            <div>
+                <p>Weather in {country.capital}:</p>
+            </div>
+        </>
     )
 }
 

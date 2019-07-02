@@ -1,6 +1,6 @@
 import React from 'react';
 
-const CountriesList = ({filterResult, setCountry}) => {
+const CountriesList = ({filterResult, setCountry, handleShowCountryClick}) => {
 
     const countryListElements = () => {
         if (filterResult.length > 10) {
@@ -16,15 +16,22 @@ const CountriesList = ({filterResult, setCountry}) => {
             return null
         }
 
-        return filterResult.map(result => <li key={result.name}>{result.name}</li>)
+        return filterResult.map(result => {
+            return (
+                <div className='list-item-container' key={result.name}>
+                    <li>{result.name}</li>
+                    <button onClick={() => handleShowCountryClick(result.name)}>show info</button>
+                </div>
+            ) 
+        })
     }
 
     return (
-        <div>
+        <>
             <ul>
                 {countryListElements()}
             </ul>
-        </div>
+        </>
     )
 }
 

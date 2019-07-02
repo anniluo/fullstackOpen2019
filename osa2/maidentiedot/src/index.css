@@ -15,3 +15,11 @@ code {
 .flag {
   max-width: 200px;
 }
+
+.list-item-container {
+  display: flex;
+}
+
+.list-item-container li {
+  padding-right: 10px;
+}

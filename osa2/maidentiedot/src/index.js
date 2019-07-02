@@ -3,13 +3,12 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import './index.css';
 
-// tee sovellus, jonka avulla voit tarkastella eri maiden tietoja
-// hae tiedot endpointista 'all'
-// näytettävä maa haetaan kirjoittamalla hakuehto etsintäkenttään
-// jos ehdon täyttäviä maita on liikaa (yli 10),
-// kehoitetaan tarkentamaan hakuehtoa
-// jos maita alla 10, mutta yli 1, näytetään kahuehdon täyttävät maat
-// kun ehdon täyttäviä maita on 1, näytetään maan perustiedot, lippu sekä puhutut kielet 
+// 2.13*: maiden tiedot, step2
+// implementoi maan nimen viereen nappi, jota painamalla pääsee
+// suoraan maan näkymään
+// 2.14*: maiden tiedot, step3
+// Lisää yksittäisen maan näkymään pääkaupungin säätiedotus
+// etsi sopiva api (esim. apixu.com)
 
 ReactDOM.render(<App />, document.getElementById('root'));
 
