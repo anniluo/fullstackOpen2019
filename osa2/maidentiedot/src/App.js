@@ -3,12 +3,14 @@ import Filter from './components/Filter';
 import CountriesList from './components/CountriesList';
 import CountryInfo from './components/CountryInfo';
 import countryService from './services/countries';
+import weatherService from './services/weather';
 
 const App = () => {
     const [countries, setCountries] = useState([])
     const [filterInput, setFilterInput] = useState('search by country')
     const [filterResult, setFilterResult] = useState([])
     const [country, setCountry] = useState('')
+    const [currentWeather, setCurrentWeather] = useState('')
 
     useEffect(() => {
         countryService
@@ -23,13 +25,23 @@ const App = () => {
         setFilterInput(event.target.value)
         
         const rx = new RegExp(`${event.target.value}`, 'gi')
-        setFilterResult(countries.filter(country => {
+        const searchResult = countries.filter(country => {
             return country.name.match(rx)
-        }))
+        })
+
+        if (searchResult.length === 1) {
+            setCountry(searchResult[0])
+        }
+        setFilterResult(searchResult)
     }
 
-    const handleShowCountryClick = name => {
-        setCountry(countries.find(country => country.name === name))
+    const handleShowCountry = country => {
+        setCountry(country)
+        weatherService
+            .getWeather(country.capital)
+            .then(initialWeather => {
+                setCurrentWeather(initialWeather)
+            })
     }
 
     return (
@@ -40,11 +52,12 @@ const App = () => {
             />
             <CountriesList
                 filterResult={filterResult}
-                setCountry={setCountry}
-                input={filterInput}
-                handleShowCountryClick={handleShowCountryClick}
+                handleShowCountry={handleShowCountry}
             />
-            <CountryInfo country={country}/>
+            <CountryInfo 
+                country={country}
+                currentWeather={currentWeather}
+            />
         </>
     )
 }
