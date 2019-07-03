@@ -1,5 +1,6 @@
 .vscode/
 
+
 # Logs
 logs
 *.log
@@ -37,6 +38,7 @@ build/Release
 # Dependency directories
 osa1/kurssitiedot/node_modules/
 osa1/unicafe/node_modules/
+osa2/kurssitiedot/node_modules/
 jspm_packages/
 
 # Distribution directories
