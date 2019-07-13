@@ -79,7 +79,7 @@ const App = () => {
                         }, 5000)
                     })
                     .catch(error => {
-                        setErrorMessage(`Update failed, contact information for ${contact.name} was already deleted from the server.`)
+                        setErrorMessage(`Update failed with message: ${error.message}`)
                         setTimeout(() => {
                             setErrorMessage(null)
                         }, 5000)
@@ -93,14 +93,21 @@ const App = () => {
                 id: contacts.length + 1
             }
     
-            contactService.create(contactObject).then(returnedContact => {
-                setContacts(contacts.concat(returnedContact))
-                setNewName('')
-                setNewNumber('')
-                setSuccessMessage(`New Contact added: ${returnedContact.name}.`)
-                setTimeout(() => {
-                    setSuccessMessage(null)
-                }, 5000)
+            contactService
+                .create(contactObject).then(returnedContact => {
+                    setContacts(contacts.concat(returnedContact))
+                    setNewName('')
+                    setNewNumber('')
+                    setSuccessMessage(`New Contact added: ${returnedContact.name}.`)
+                    setTimeout(() => {
+                        setSuccessMessage(null)
+                    },  5000)
+                })
+                .catch(error => {
+                    setErrorMessage(`Creation failed with message: ${error.response.data.error}`)
+                    setTimeout(() => {
+                        setErrorMessage(null)
+                    }, 5000)
             })
         }
     }

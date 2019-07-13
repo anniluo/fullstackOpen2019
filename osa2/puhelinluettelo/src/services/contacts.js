@@ -1,6 +1,5 @@
 import axios from 'axios';
-
-const baseUrl = 'http://localhost:3001/contacts';
+const baseUrl = '/api/persons';
 
 const getAll = () => {
     const request = axios.get(baseUrl)
@@ -12,7 +11,7 @@ const create = newContact => {
     return request.then(response => response.data)
 }
 
-const drop = (id) => {
+const drop = id => {
     const request = axios.delete(`${baseUrl}/${id}`)
     return request.then(response => response.data)
 }
