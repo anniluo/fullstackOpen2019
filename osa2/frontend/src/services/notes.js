@@ -1,6 +1,8 @@
 import axios from 'axios';
-
-const baseUrl = 'http://localhost:3001/notes'
+// heroku server build folder
+// const baseUrl = '/api/notes'
+// development server
+const baseUrl = 'https://fullstack-open-example.herokuapp.com/api/notes'
 
 const getAll = () => {
     const request = axios.get(baseUrl)

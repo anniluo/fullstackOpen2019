@@ -1,6 +1,16 @@
+h1 {
+  color:green;
+  font-style: italic;
+}
+
 .note {
-  color: green;
+  color: grey;
   padding-top: 5px;
+  font-size: 15px;
+}
+
+.note button {
+  margin: 5px; 
 }
 
 .error {
