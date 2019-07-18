@@ -53,6 +53,17 @@ test('Right amount of blogs are returned as json', async () => {
     expect(response.body.length).toBe(3)
 })
 
+test('The identifier for a blog should be named "id"', async () => {
+    const response = await api
+        .get('/api/blogs')
+        .expect(200)
+        .expect('Content-Type', /application\/json/)
+    
+    response.body.forEach(blog => {
+        expect(blog.id).toBeDefined()
+    });
+})
+
 afterAll(() => {
     mongoose.connection.close()
 })
