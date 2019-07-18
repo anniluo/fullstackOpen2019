@@ -62,6 +62,28 @@ test('The identifier for a blog should be named "id"', async () => {
     response.body.forEach(blog => {
         expect(blog.id).toBeDefined()
     });
+}) 
+
+test('A valid blog can be added', async () => {
+    const newBlog = {
+        _id: "5a422a851b54a123464d17f7",
+        title: "Automating My Todo with GitHub and Twilio",
+        author: "Alice Goldfuss",
+        url: "https://blog.alicegoldfuss.com/automating-my-todo/",
+        likes: 42,
+        __v: 0
+    }
+
+    await api
+        .post('/api/blogs')
+        .send(newBlog)
+        .expect(201)
+        .expect('Content-Type', /application\/json/)
+    
+    const response = await api.get('/api/blogs')
+    const urls = response.body.map(blog => blog.url)
+    expect(response.body.length).toBe(initialBlogs.length + 1)
+    expect(urls).toContain(newBlog.url)
 })
 
 afterAll(() => {
