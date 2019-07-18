@@ -95,6 +95,21 @@ test('A blog with no likes gets a value of 0 for that', async () => {
     expect(response.body.likes).toBe(0)
 })
 
+test('A blog with no title and url is responded with a status code of 400 (Bad Request)', async () => {
+    const newBlog = {
+        author: "Alice Goldfuss",
+        likes: 1
+    }
+
+    await api
+        .post('/api/blogs')
+        .send(newBlog)
+        .expect(400)
+
+    const response = await api.get('/api/blogs')
+    expect(response.body.length).toBe(initialBlogs.length)
+})
+
 afterAll(() => {
     mongoose.connection.close()
 })

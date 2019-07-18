@@ -14,20 +14,26 @@ blogRouter.get('/', async (request, response) => {
 
 blogRouter.post('/', async (request, response) => {
     const body = request.body
-    const blog = new Blog({
-        title: body.title,
-        author: body.author,
-        url: body.url,
-        likes: body.likes === undefined ? 0 : body.likes 
-    })
 
-    try {
-        const savedBlog = await blog.save()
-        response.status(201).json(savedBlog.toJSON())
+    if (body.title === undefined || body.url === undefined) {
+        response.status(400).json({message: 'title and/or url missing!'})
 
-    } catch(exception) {
-        console.log('An error occured:', exception)
-        response.status(400).end()
+    } else {
+        const blog = new Blog({
+            title: body.title,
+            author: body.author,
+            url: body.url,
+            likes: body.likes === undefined ? 0 : body.likes 
+        })
+    
+        try {
+            const savedBlog = await blog.save()
+            response.status(201).json(savedBlog.toJSON())
+    
+        } catch(exception) {
+            console.log('An error occured:', exception)
+            response.status(400).end()
+        }
     }
 })
 
