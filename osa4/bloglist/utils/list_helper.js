@@ -31,11 +31,7 @@ const favouriteBlog = blogs => {
     }
 }
 
-// 4.6*: apufunktioita ja yksikkötestejä, step4
 const mostBlogs = blogs => {
-    // returns the author with most blogs
-    // and the number of the written blogs
-    // if many, return one of them
     if (blogs.length === 0) {
         return 0
     }
