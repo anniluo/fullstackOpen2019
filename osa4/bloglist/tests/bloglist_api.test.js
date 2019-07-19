@@ -110,6 +110,26 @@ test('A blog with no title and url is responded with a status code of 400 (Bad R
     expect(response.body.length).toBe(initialBlogs.length)
 })
 
+test('A blog is deleted if the id is valid', async () => {
+    let response = await api.get('/api/blogs')
+    const blogsInDb = response.body
+
+    const blogToDelete = blogsInDb[0]
+
+    await api
+        .delete(`/api/blogs/${blogToDelete.id}`)
+        .expect(204)
+    
+    response = await api.get('/api/blogs') 
+    const blogsAtEnd = response.body
+    
+    expect(blogsAtEnd.length).toBe(initialBlogs.length - 1)
+
+    const urls = blogsAtEnd.map(blog => blog.url)
+
+    expect(urls).not.toContain(blogToDelete.url)
+})
+
 afterAll(() => {
     mongoose.connection.close()
 })

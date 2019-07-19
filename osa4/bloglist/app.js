@@ -6,6 +6,8 @@ const cors = require('cors')
 const blogRouter = require('./controllers/blogs')
 const mongoose = require('mongoose')
 
+mongoose.set('useFindAndModify', false);
+
 mongoose.connect(config.MONGODB_URI, { useNewUrlParser: true })
     .then(() => {
         console.log('Connected to Mongo Database')
