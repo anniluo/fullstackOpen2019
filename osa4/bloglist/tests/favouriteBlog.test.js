@@ -121,46 +121,41 @@ const listWithBlogsWithEqualLikes = [
 describe('Favourite blog', () => {
     test('When list is empty equals to 0', () => {
       const result = favouriteBlog(listWithZeroBlogs)
-      console.log(result)
       expect(result).toBe(0)
     })
 
     test('When list includes only blogs with 0 likes equals to 0', () => {
       const result = favouriteBlog(listWithBlogsWithNoLikes)
-      console.log(result)
       expect(result).toBe(0)
-  })
+    })
 
     test('When list has one blog with likes equals to that', () => {
       const result = favouriteBlog(listWithOneBlogWithLikes)
-      console.log(result)
       expect(result)
         .toEqual({
           title: "React patterns",
           author: "Michael Chan",
           likes: 5
         })
-  })
+    })
 
     test('When list has one favourite equals to that', () => {
       const result = favouriteBlog(listWithBlogsWithLikes)
-      console.log(result)
       expect(result)
         .toEqual({
           title: "TDD harms architecture",
           author: "Robert C. Martin",
           likes: 16
        })
-  })
+    })
 
-  test('When list has more than one favourite blog equals to one of them', () => {
-    const result = favouriteBlog(listWithBlogsWithEqualLikes)
-    console.log(result)
-    expect(result)
-      .toEqual({
-        title: "Go To Statement Considered Harmful",
-        author: "Edsger W. Dijkstra",
-        likes: 12
-     })
-})
+    test('When list has more than one favourite blog equals to one of them', () => {
+      const result = favouriteBlog(listWithBlogsWithEqualLikes)
+      expect(result)
+        .toEqual({
+          title: "Go To Statement Considered Harmful",
+          author: "Edsger W. Dijkstra",
+          likes: 12
+      })
+    })
 })

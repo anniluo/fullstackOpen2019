@@ -38,7 +38,31 @@ const mostBlogs = blogs => {
     // if many, return one of them
     if (blogs.length === 0) {
         return 0
-    }   
+    }
+
+    if (blogs.length === 1) {
+        const mostBlogs = {
+            author: blogs[0].author,
+            blogs: 1
+        }
+        return mostBlogs
+    }
+
+    const authors = blogs.map(blog => blog.author)
+    // filters to all the authors that have the most blogs
+    const nonUnique = authors.filter(author => {
+        return authors.indexOf(author) !== authors.lastIndexOf(author)
+    })
+
+    // filters to the first author with most blogs
+    const mostBlogs = nonUnique.filter(mostBlog => {
+        return mostBlog === nonUnique[0]
+    })
+
+    return {
+        author: mostBlogs[0],
+        blogs: mostBlogs.length
+    }
 }
 
 // 4.7*: apufunktioita ja yksikkötestejä, step 5
@@ -51,5 +75,6 @@ const mostLikes = blogs => {
 module.exports = {
     dummy,
     totalLikes,
-    favouriteBlog
+    favouriteBlog,
+    mostBlogs
 }
