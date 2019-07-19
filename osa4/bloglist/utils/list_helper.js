@@ -1,3 +1,5 @@
+const _ = require('lodash')
+
 const dummy = blogs => {
     return 1
 }
@@ -11,7 +13,6 @@ const totalLikes = blogs => {
     return likes.reduce((total, currentValue) => total + currentValue)
 }
 
-// 4.5*: apufunktioita ja yksikkötestejä, step3
 const favouriteBlog = blogs => {
     const isEveryLikeZero = blogs.every(blog => blog.likes === 0)
     
@@ -19,14 +20,10 @@ const favouriteBlog = blogs => {
         return 0
     }
 
-    let favouriteBlog = blogs[0]
-
-    blogs.forEach(blog => {
-        favouriteBlog = favouriteBlog.likes >= blog.likes
-        ? favouriteBlog
-        : blog
-    });
-
+    const likes = blogs.map(blog => blog.likes)
+    const maxLikes = Math.max(...likes)
+    const favouriteBlog = blogs.find(blog => blog.likes === maxLikes)
+    
     return {
         title: favouriteBlog.title,
         author: favouriteBlog.author,
@@ -39,7 +36,9 @@ const mostBlogs = blogs => {
     // returns the author with most blogs
     // and the number of the written blogs
     // if many, return one of them
-    // {author: "", blogs: 6}
+    if (blogs.length === 0) {
+        return 0
+    }   
 }
 
 // 4.7*: apufunktioita ja yksikkötestejä, step 5
