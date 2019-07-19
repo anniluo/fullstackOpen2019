@@ -130,6 +130,23 @@ test('A blog is deleted if the id is valid', async () => {
     expect(urls).not.toContain(blogToDelete.url)
 })
 
+test('A blog is updated if the id is valid', async () => {
+    let getResponse = await api.get('/api/blogs')
+    const blogsInDb = getResponse.body
+
+    const blogToUpdate = blogsInDb[0]
+    const updatedBlog = {
+        likes: 69
+    }
+
+    const putResponse = await api
+        .put(`/api/blogs/${blogToUpdate.id}`)
+        .send(updatedBlog)
+        .expect(200)
+    
+    expect(putResponse.body.likes).toBe(updatedBlog.likes)
+})
+
 afterAll(() => {
     mongoose.connection.close()
 })
