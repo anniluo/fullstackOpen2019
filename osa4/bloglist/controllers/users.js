@@ -7,10 +7,17 @@ usersRouter.get('/', async (request, response) => {
     response.json(users.map(user => user.toJSON()))
 })
 
-usersRouter.post('/', async (request, response) => {
-    try {
-        const body = request.body
+usersRouter.post('/', async (request, response, next) => {
+    const body = request.body
+    if (body.password === undefined) {
+        return response.status(400).json({error: 'username and/or password missing!'})
+    }
 
+    if (body.password.length < 3) {
+        return response.status(400).json({error: 'chosen password is too short!'})
+    }
+
+    try {
         const saltRounds = 10
         const passwordHashed = await bcrypt.hash(body.password, saltRounds)
 
@@ -23,7 +30,7 @@ usersRouter.post('/', async (request, response) => {
         const savedUser = await user.save()
         response.json(savedUser)
     } catch (exception) {
-        response.json({error: `Error occured when trying to create a new user:${exception}`})
+        next(exception)
     }
 })
 
