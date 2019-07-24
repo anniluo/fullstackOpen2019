@@ -3,6 +3,8 @@ const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
 const cors = require('cors')
+const middleware = require('./utils/middleware')
+const usersRouter = require('./controllers/users')
 const blogRouter = require('./controllers/blogs')
 const mongoose = require('mongoose')
 
@@ -18,6 +20,8 @@ mongoose.connect(config.MONGODB_URI, { useNewUrlParser: true })
 
 app.use(cors())
 app.use(bodyParser.json())
+app.use('/api/users', usersRouter)
 app.use('/api/blogs', blogRouter)
+app.use(middleware.errorHandler)
 
 module.exports = app
