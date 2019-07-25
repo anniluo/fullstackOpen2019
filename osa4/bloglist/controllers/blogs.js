@@ -3,14 +3,13 @@ const jwt = require('jsonwebtoken')
 const Blog = require('../models/blog')
 const User = require('../models/user')
 
-blogRouter.get('/', async (request, response) => {
+blogRouter.get('/', async (request, response, next) => {
     try {
         const blogs = await Blog.find({}).populate('user', {username: 1, name: 1})
         response.status(200).json(blogs.map(blog => blog.toJSON()))
 
     } catch(exception) {
-        console.log('An error occured:', exception)
-        response.status(404).end()
+        next(exception)
     }
 })
 
@@ -19,7 +18,7 @@ blogRouter.post('/', async (request, response, next) => {
 
     try {
         const decodedToken = jwt.verify(request.token, process.env.SECRET)
-        if (!decodedToken.id) {
+        if (!request.token || !decodedToken.id) {
             return response.status(401).json({error: 'missing or invalid token!'})
         }
     
@@ -47,17 +46,28 @@ blogRouter.post('/', async (request, response, next) => {
     }
 })
 
-blogRouter.delete('/:id', async (request, response) => {
+blogRouter.delete('/:id', async (request, response, next) => {
     try {
-        await Blog.findByIdAndRemove(request.params.id)
+        const decodedToken = jwt.verify(request.token, process.env.SECRET)
+        if (!request.token || !decodedToken.id) {
+            return response.status(401).json({error: 'missing or invalid token!'})
+        }
+
+        const userId = decodedToken.id
+        const blog = await Blog.findById(request.params.id)
+
+        if (blog.user.toString() !== userId.toString()) {
+            return response.status(401).json({error: 'User is not authorized!'})
+        }
+
+        await Blog.findByIdAndRemove(blog.id)
         response.status(204).end()
     } catch(exception) {
-        console.log('error in deleting a blog', exception)
-        response.status(400).end()
+        next(exception)
     }
 })
 
-blogRouter.put('/:id', async (request, response) => {
+blogRouter.put('/:id', async (request, response, next) => {
     const body = request.body
 
     const blog = {
@@ -69,8 +79,7 @@ blogRouter.put('/:id', async (request, response) => {
             .findByIdAndUpdate(request.params.id, blog, {new: true})
         response.status(200).json(updatedBlog.toJSON())
     } catch(exception) {
-        console.log('error in updating a blog', exception)
-        response.status(400).end()
+        next(exception)
     }
 })
 
